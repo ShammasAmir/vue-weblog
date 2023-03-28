@@ -1,18 +1,28 @@
 <template>
-    <h1>
-        This is users page !
-    </h1>
+    <div class="container mt-5">
+        <div class="row g-3">
+            <div class="col-md-4" v-for="user in users" :key="user.id">
+                <CardUser  :user="user" />
+            </div>
+        </div>     
+    </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { ref } from 'vue';
+import CardUser from '../components/users/CardUser.vue'
 export default {
+    components:{
+        CardUser
+    },
     setup() {
+        const users = ref([])
         function getUsers() {
             axios.get('https://jsonplaceholder.typicode.com/users')
                 .then(function (response) {
                     // handle success
-                    console.log(response.data);
+                    users.value = response.data;
                 })
                 .catch(function (error) {
                     // handle error
@@ -20,6 +30,7 @@ export default {
                 });
         }
         getUsers()
+        return {users}
     }
 }
 </script>
